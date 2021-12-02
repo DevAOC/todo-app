@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
-function App() {
+import Form from './components/form/Form.js';
+import List from './components/list/List.js';
+
+import { SettingsContext } from './context/settings.js';
+
+export default function App() {
+  const [list, setList] = useState([]);
+
+  function addItem(item) {
+    console.log(item);
+    item.id = uuid();
+    item.complete = false;
+    setList([...list, item]);
+  }
+
+  function deleteItem(id) {
+    const items = list.filter((item) => item.id !== id);
+    setList(items);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Form addItem={addItem} />
+      <SettingsContext.Consumer>
+        {(settingsContext) => (
+          <>
+            <List list={settingsContext.hide ? list.filter((item) => !item.complete) : list} setList={setList} />
+          </>
+        )}
+      </SettingsContext.Consumer>
+    </>
   );
 }
-
-export default App;
