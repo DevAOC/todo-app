@@ -1,3 +1,5 @@
+import { Button } from '@blueprintjs/core';
+
 export default function RenderList({ item, idx, toggleComplete }) {
   return (
     <div key={idx}>
@@ -9,9 +11,13 @@ export default function RenderList({ item, idx, toggleComplete }) {
         <small>Difficulty: {item.difficulty}</small>
       </p>
       {item.complete ? (
-        <button onClick={() => toggleComplete(item.id)}>Complete</button>
+        <Button intent="success" onClick={() => toggleComplete(item.id)}>
+          Complete
+        </Button>
       ) : (
-        <button onClick={() => toggleComplete(item.id)}>Pending</button>
+        <Button intent="danger" onClick={() => toggleComplete(item.id)}>
+          Pending
+        </Button>
       )}
       <hr />
     </div>

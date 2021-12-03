@@ -4,8 +4,21 @@ export const SettingsContext = React.createContext();
 
 export default function Settings(props) {
   const [hide, setHide] = useState(false);
-  const [pagination, setPagination] = useState(5);
-  const [sort, setSort] = useState('difficulty');
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [sort, setSort] = useState('none');
 
-  return <SettingsContext.Provider value={{ hide, pagination, sort }}>{props.children}</SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider
+      value={{
+        hide,
+        itemsPerPage,
+        sort,
+        setHide,
+        setItemsPerPage,
+        setSort,
+      }}
+    >
+      {props.children}
+    </SettingsContext.Provider>
+  );
 }

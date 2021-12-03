@@ -1,3 +1,4 @@
+import { Button } from '@blueprintjs/core';
 import { useEffect, useState, useContext } from 'react';
 import { SettingsContext } from '../../context/settings.js';
 
@@ -7,7 +8,7 @@ export default function List(props) {
   const settings = useContext(SettingsContext);
 
   const [incomplete, setIncomplete] = useState([]);
-  const [paginationEnd, setPaginationEnd] = useState(settings.pagination);
+  const [currentPage, setCurrentPage] = useState(1);
 
   function toggleComplete(id) {
     const items = props.list.map((item) => {
@@ -27,19 +28,19 @@ export default function List(props) {
   }, [props.list]);
 
   const pagination = () => {
-    const start = paginationEnd - settings.pagination;
-    return props.list.slice(start, paginationEnd);
+    const end = currentPage * settings.itemsPerPage;
+    return props.list.slice(end - settings.itemsPerPage, end);
     // .filter(item => item.difficulty !== settings.difficulty).sort(item => (a, b) => )
   };
 
   const handleNext = (e) => {
     e.preventDefault();
-    setPaginationEnd(paginationEnd + settings.pagination);
+    setCurrentPage(currentPage + 1);
   };
 
   const handlePrevious = (e) => {
     e.preventDefault();
-    setPaginationEnd(paginationEnd - settings.pagination);
+    setCurrentPage(currentPage - 1);
   };
 
   return (
@@ -47,11 +48,11 @@ export default function List(props) {
       <header>
         <h1>To Do List: {incomplete} items pending</h1>
       </header>
-      <button onClick={handlePrevious}>Previous</button>
-      <button onClick={handleNext}>Next</button>
       {pagination().map((item, idx) => (
         <ListItem item={item} idx={idx} toggleComplete={toggleComplete} />
       ))}
+      <Button onClick={handlePrevious}>Previous</Button>
+      <Button onClick={handleNext}>Next</Button>
     </>
   );
 }
