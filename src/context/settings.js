@@ -4,10 +4,21 @@ export const SettingsContext = React.createContext();
 
 export default function Settings(props) {
   const [hide, setHide] = useState(false);
-  const [displayNumberOfItems, setDisplayNumberOfItems] = useState(5);
-  const [sort, setSort] = useState('');
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [sort, setSort] = useState('none');
 
   return (
-    <SettingsContext.Provider value={{ hide, displayNumberOfItems, sort }}>{props.children}</SettingsContext.Provider>
+    <SettingsContext.Provider
+      value={{
+        hide,
+        itemsPerPage,
+        sort,
+        setHide,
+        setItemsPerPage,
+        setSort,
+      }}
+    >
+      {props.children}
+    </SettingsContext.Provider>
   );
 }
