@@ -1,5 +1,7 @@
 import { Button } from '@blueprintjs/core';
 import { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
+
 import { SettingsContext } from '../../context/settings.js';
 
 import ListItem from '../listItem/ListItem.js';
@@ -10,7 +12,7 @@ export default function List(props) {
   const [incomplete, setIncomplete] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  function toggleComplete(id) {
+  async function toggleComplete(id) {
     const items = props.list.map((item) => {
       if (item.id === id) {
         item.complete = !item.complete;

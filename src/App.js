@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 
 import Form from './components/form/Form.js';
 import Settings from './components/settings/Settings.js';
@@ -13,15 +14,23 @@ export default function App() {
   const settings = useContext(SettingsContext);
   const [list, setList] = useState([]);
 
-  function addItem(item) {
+  async function addItem(item) {
     item.id = uuid();
     item.complete = false;
-    setList([...list, item]);
+    try {
+      const res = await axios.post('/api', item);
+      setList([...list, res]);
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 
-  function deleteItem(id) {
-    const items = list.reduce((item) => item.id !== id);
-    setList(items);
+  async function deleteItem(id) {
+    try {
+      await axios.delete('/api', id);
+      const items = list.reduce((item) => item.id !== id);
+      setList(items);
+    } catch (error) {}
   }
 
   return (
