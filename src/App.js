@@ -6,6 +6,8 @@ import Settings from './components/settings/Settings.js';
 import List from './components/list/List.js';
 
 import { SettingsContext } from './context/settings.js';
+import Login from './components/auth/Login.js';
+import IsAuthorized from './components/auth/IsAuthorized.js';
 
 export default function App() {
   const settings = useContext(SettingsContext);
@@ -24,9 +26,12 @@ export default function App() {
 
   return (
     <>
-      <Form addItem={addItem} />
-      <Settings />
-      <List list={settings.hide ? list.filter((item) => !item.complete) : list} setList={setList} />
+      <Login />
+      <IsAuthorized capability="read">
+        <Form addItem={addItem} />
+        <Settings />
+        <List list={settings.hide ? list.filter((item) => !item.complete) : list} setList={setList} />
+      </IsAuthorized>
     </>
   );
 }
